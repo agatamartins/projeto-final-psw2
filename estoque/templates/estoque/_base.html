@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja de Sapatos - Guanambi</title>
+    <style>
+        :root {
+            /* Paleta Sapato/Couro */
+            --primary-brown: #8B4513;
+            --secondary-brown: #A0522D;
+            --dark-bg: #1a1a1a;
+            --sidebar-bg: #1a1a1a;
+            --header-bg: #8B4513;
+            --accent-gold: #D4AF37;
+            
+            /* Tons de Ouro e Bege */
+            --gold-light: #F0E68C;
+            --gold-dark: #DAA520;
+            --gold-accent: #FFD700;
+            
+            --border-color: #A0522D;
+        }
+
+        body {
+            font-family: "Roboto", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--dark-bg);
+            color: var(--gold-light);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            width: 100%;
+        }
+
+        .content {
+            flex: 1;
+            padding: 40px;
+            background-color: #242424;
+            min-height: 100%;
+        }
+
+        .content-box {
+            max-width: 1200px;
+            margin: 0;
+        }
+
+        h1, h2 {
+            color: var(--gold-accent);
+            border-bottom: 1px solid var(--secondary-brown);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        a {
+            color: var(--gold-light);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        a:hover {
+            color: var(--gold-accent);
+        }
+
+        .btn-secundary {
+            color: var(--gold-light);
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        .btn-secundary:hover {
+            color: var(--gold-accent);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    {% include '_topbar.html' %}
+    <div class="main-container">
+        {% include '_sidebar.html' %}
+        <div class="content">
+            <div class="content-box">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+    {% include '_footer.html' %}
+</body>
+</html>
+

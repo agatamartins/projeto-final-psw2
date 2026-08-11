@@ -1,0 +1,19 @@
+{% extends '_base.html' %}
+{% block content %}
+<div style="background-color: #242424; padding: 30px; border-radius: 10px; border: 1px solid var(--moss-olive); max-width: 500px; margin: 0 auto;">
+    <h2 style="color: var(--yellow-accent); margin-bottom: 20px;">
+        🛍️ Loja de Sapatos - {% if sapato %} Editar {% else %} Cadastrar Novo {% endif %}
+    </h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div style="margin-bottom: 25px;">
+            {{ form.as_p }}
+        </div>
+        <div style="display: flex; gap: 15px;">
+            <button type="submit" style="background-color: var(--yellow-accent); color: var(--moss-dark); padding: 12px 24px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">✅ Salvar no Estoque</button>
+            <a href="{% url 'sapato_list' %}" style="background: #333; color: white; padding: 12px 24px; border-radius: 5px; text-decoration: none;">Voltar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

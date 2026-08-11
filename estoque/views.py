@@ -2,7 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Produto
-from .forms import ProdutoForm
+from django.shortcuts import render
+from .form import ProdutoForm
+from django.shortcuts import render
+
 
 # 1. READ (Listagem)
 @login_required
@@ -53,3 +56,9 @@ def produto_delete(request, pk):
         messages.success(request, 'Produto removido com sucesso!')
         return redirect('produto_list')
     return render(request, 'estoque/produto_confirm_delete.html', {'produto': produto})
+    
+    def nome_da_sua_funcao(request):
+        return render(request, '_base.html')
+
+def dashboard(request):
+    return render(request, 'estoque/dashboard.html')
