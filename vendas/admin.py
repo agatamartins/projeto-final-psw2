@@ -7,5 +7,5 @@ class ItemVendaInline(admin.TabularInline):
 
 @admin.register(Venda)
 class VendaAdmin(admin.ModelAdmin):
-    list_display = ['id', 'usuario', 'data_venda', 'valor_total']
+    list_display = ('id', 'usuario', 'data_venda', 'valor_total')
     inlines = [ItemVendaInline]

@@ -121,7 +121,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+<<<<<<< HEAD
 AUTH_USER_MODEL = 'usuarios.Usuario'
+=======
+>>>>>>> 843c6fe (Criação dos models)
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'produtos:produto_lista_criar'  # Redireciona para produtos após logar

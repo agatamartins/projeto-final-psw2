@@ -9,4 +9,8 @@ class CategoriaForm(forms.ModelForm):
 class ProdutoForm(forms.ModelForm):
     class Meta:
         model = Produto
-        fields = ['nome', 'preco_venda', 'estoque_minimo', 'categoria', 'fornecedor']
+        fields = ['nome', 'preco_venda', 'estoque_minimo', 'categoria', 'fornecedores']
+
+        widgets = {
+            'fornecedores': forms.CheckboxSelectMultiple(),
+        }

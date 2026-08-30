@@ -13,18 +13,18 @@ class Produto(models.Model):
     preco_venda = models.DecimalField(max_digits=10, decimal_places=2)
     estoque_minimo = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     
-    # Relacionamentos 1:N
+
     categoria = models.ForeignKey(
         Categoria, 
         on_delete=models.CASCADE, 
         related_name='produtos'
     )
-    fornecedor = models.ForeignKey(
+    
+    
+    fornecedores = models.ManyToManyField(
         Fornecedor, 
-        on_delete=models.SET_NULL, 
-        null=True, 
-        blank=True, 
-        related_name='produtos'
+        related_name='produtos',
+        blank=True
     )
 
     def __str__(self):
