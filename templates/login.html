@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 400px; margin: 50px auto;">
+    <h2>Acessar o Sistema</h2>
+    
+    {% if form.errors %}
+        <p style="color: red;">Usuário ou senha inválidos.</p>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_username">Usuário:</label>
+            {{ form.username }}
+        </div>
+        <br>
+        <div class="form-group">
+            <label for="id_password">Senha:</label>
+            {{ form.password }}
+        </div>
+        <br>
+        <button type="submit">Entrar</button>
+    </form>
+</div>
+{% endblock %}

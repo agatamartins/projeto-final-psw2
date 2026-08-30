@@ -122,3 +122,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 AUTH_USER_MODEL = 'usuarios.Usuario'
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'produtos:produto_lista_criar'  # Redireciona para produtos após logar
+LOGOUT_REDIRECT_URL = 'login'                        # Redireciona para o login após deslogar
