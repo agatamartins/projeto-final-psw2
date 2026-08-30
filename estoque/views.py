@@ -1,64 +1,131 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from .models import Produto
-from django.shortcuts import render
-from .form import ProdutoForm
-from django.shortcuts import render
+from django.db import transaction
+
+# Importe os modelos do seu app estoque
+from .models import Categoria, Fornecedor, Produto, Venda, ItemVenda, Usuario
+# Importe os formulários que criou no forms.py
+from .forms import CategoriaForm, FornecedorForm, ProdutoForm
 
 
-# 1. READ (Listagem)
+# ==========================================
+# 1. CRUD CATEGORIA
+# ==========================================
+class CategoriaListView(ListView):
+    model = Categoria
+    template_name = 'categoria_list.html'
+    context_object_name = 'categorias'
+
+class CategoriaCreateView(CreateView):
+    model = Categoria
+    form_class = CategoriaForm
+    template_name = 'categoria_form.html'
+    success_url = reverse_lazy('categoria_list')
+
+class CategoriaUpdateView(UpdateView):
+    model = Categoria
+    form_class = CategoriaForm
+    template_name = 'categoria_form.html'
+    success_url = reverse_lazy('categoria_list')
+
+class CategoriaDeleteView(DeleteView):
+    model = Categoria
+    template_name = 'confirm_delete.html'
+    success_url = reverse_lazy('categoria_list')
+
+
+# ==========================================
+# 2. CRUD FORNECEDOR
+# ==========================================
+class FornecedorListView(ListView):
+    model = Fornecedor
+    template_name = 'fornecedor_list.html'
+    context_object_name = 'fornecedores'
+
+class FornecedorCreateView(CreateView):
+    model = Fornecedor
+    form_class = FornecedorForm
+    template_name = 'fornecedor_form.html'
+    success_url = reverse_lazy('fornecedor_list')
+
+class FornecedorUpdateView(UpdateView):
+    model = Fornecedor
+    form_class = FornecedorForm
+    template_name = 'fornecedor_form.html'
+    success_url = reverse_lazy('fornecedor_list')
+
+class FornecedorDeleteView(DeleteView):
+    model = Fornecedor
+    template_name = 'confirm_delete.html'
+    success_url = reverse_lazy('fornecedor_list')
+
+
+# ==========================================
+# 3. CRUD PRODUTO
+# ==========================================
+class ProdutoListView(ListView):
+    model = Produto
+    template_name = 'produto_list.html'
+    context_object_name = 'produtos'
+
+class ProdutoCreateView(CreateView):
+    model = Produto
+    form_class = ProdutoForm
+    template_name = 'produto_form.html'
+    success_url = reverse_lazy('produto_list')
+
+class ProdutoUpdateView(UpdateView):
+    model = Produto
+    form_class = ProdutoForm
+    template_name = 'produto_form.html'
+    success_url = reverse_lazy('produto_list')
+
+class ProdutoDeleteView(DeleteView):
+    model = Produto
+    template_name = 'confirm_delete.html'
+    success_url = reverse_lazy('produto_list')
+
+
+# ==========================================
+# 4. REGISTRO DE VENDA
+# ==========================================
 @login_required
-def produto_list(request):
+def realizar_venda(request):
     produtos = Produto.objects.all()
-    return render(request, 'estoque/produto_list.html', {'produtos': produtos})
 
-# 2. DETAIL VIEW (Detalhes) - Requisito do edital
-@login_required
-def produto_detail(request, pk):
-    produto = get_object_or_404(Produto, pk=pk)
-    lotes = produto.lotes.all() # Histórico de lotes deste produto
-    return render(request, 'estoque/produto_detail.html', {'produto': produto, 'lotes': lotes})
-
-# 3. CREATE (Criação)
-@login_required
-def produto_create(request):
     if request.method == 'POST':
-        form = ProdutoForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Produto cadastrado com sucesso!')
-            return redirect('produto_list')
-    else:
-        form = ProdutoForm()
-    return render(request, 'estoque/produto_form.html', {'form': form, 'titulo': 'Cadastrar Produto'})
+        usuario_logado = Usuario.objects.get(user=request.user)
 
-# 4. UPDATE (Edição)
-@login_required
-def produto_update(request, pk):
-    produto = get_object_or_404(Produto, pk=pk)
-    if request.method == 'POST':
-        form = ProdutoForm(request.POST, instance=produto)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Produto atualizado com sucesso!')
-            return redirect('produto_list')
-    else:
-        form = ProdutoForm(instance=produto)
-    return render(request, 'estoque/produto_form.html', {'form': form, 'titulo': 'Editar Produto'})
+        produtos_ids = request.POST.getlist('produto_id')
+        quantidades = request.POST.getlist('quantidade')
 
-# 5. DELETE (Exclusão)
-@login_required
-def produto_delete(request, pk):
-    produto = get_object_or_404(Produto, pk=pk)
-    if request.method == 'POST':
-        produto.delete()
-        messages.success(request, 'Produto removido com sucesso!')
-        return redirect('produto_list')
-    return render(request, 'estoque/produto_confirm_delete.html', {'produto': produto})
-    
-    def nome_da_sua_funcao(request):
-        return render(request, '_base.html')
+        if produtos_ids and quantidades:
+            with transaction.atomic():
+                venda = Venda.objects.create(
+                    usuario=usuario_logado,
+                    valor_total=0
+                )
 
-def dashboard(request):
-    return render(request, 'estoque/dashboard.html')
+                total_venda = 0
+
+                for p_id, qtd in zip(produtos_ids, quantidades):
+                    if int(qtd) > 0:
+                        prod = Produto.objects.get(id=p_id)
+                        subtotal = prod.preco_venda * int(qtd)
+                        total_venda += subtotal
+
+                        ItemVenda.objects.create(
+                            venda=venda,
+                            produto=prod,
+                            quantidade=int(qtd),
+                            preco_unitario=prod.preco_venda
+                        )
+
+                venda.valor_total = total_venda
+                venda.save()
+
+                return redirect('produto_list')
+
+    return render(request, 'venda_form.html', {'produtos': produtos})
