@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-section">
+    <h2>Cadastrar Usuário</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Salvar Usuário</button>
+    </form>
+</div>
+
+<hr>
+
+<div class="list-section">
+    <h2>Usuários Cadastrados</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>CPF</th>
+                <th>RG</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for usuario in usuarios %}
+            <tr>
+                <td>{{ usuario.username }}</td>
+                <td>{{ usuario.get_full_name|default:"-" }}</td>
+                <td>{{ usuario.email|default:"-" }}</td>
+                <td>{{ usuario.cpf }}</td>
+                <td>{{ usuario.rg|default:"-" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">Nenhum usuário cadastrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

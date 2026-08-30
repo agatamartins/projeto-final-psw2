@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-section">
+    <h2>Cadastrar Produto</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Salvar Produto</button>
+    </form>
+</div>
+
+<hr>
+
+<div class="list-section">
+    <h2>Produtos Cadastrados</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Preço de Venda</th>
+                <th>Estoque Mínimo</th>
+                <th>Categoria</th>
+                <th>Fornecedor</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for produto in produtos %}
+            <tr>
+                <td>{{ produto.nome }}</td>
+                <td>R$ {{ produto.preco_venda }}</td>
+                <td>{{ produto.estoque_minimo }}</td>
+                <td>{{ produto.categoria.nome }}</td>
+                <td>{{ produto.fornecedor.razao_social|default:"Sem Fornecedor" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">Nenhum produto cadastrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
