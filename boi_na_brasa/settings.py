@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'produtos',
     'fornecedores',
     'vendas',
+    'feedback',
 ]
 
 MIDDLEWARE = [
@@ -126,6 +127,8 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'produtos:produto_lista_criar'
+LOGIN_REDIRECT_URL = 'produtos:produto_list'
 LOGOUT_REDIRECT_URL = 'login'                        # Redireciona para o login após deslogar

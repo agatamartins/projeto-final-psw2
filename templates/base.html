@@ -10,15 +10,16 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>
-        {% block title %}Sistema de Gestão{% endblock %}
-    </title>
+    <title>{% block title %}Boi na Brasa | Sistema de Gestão{% endblock %}</title>
 
     <link rel="stylesheet"
           href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
 
     <link rel="stylesheet"
           href="{% static 'vendor/bootstrap-icons/bootstrap-icons.min.css' %}">
+
+        <link rel="stylesheet"
+            href="{% static 'flexbiz/css/site.css' %}">
 
     {% block extra_css %}{% endblock %}
 
@@ -30,8 +31,9 @@
 
     <div class="container">
 
-        <a class="navbar-brand" href="/">
-            Sistema de Gestão
+        <a class="navbar-brand" href="{% url 'inicio' %}">
+            <i class="bi bi-shop me-2"></i>
+            Boi na Brasa
         </a>
 
         <button class="navbar-toggler"
@@ -48,40 +50,43 @@
 
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-                <li class="nav-item">
-                    <a class="nav-link"
-                       href="{% url 'usuarios:usuario_list' %}">
-                        Usuários
-                    </a>
-                </li>
+                {% if request.user.is_authenticated %}
 
-                <li class="nav-item">
-                    <a class="nav-link"
-                       href="{% url 'produtos:categoria_list' %}">
-                        Categorias
-                    </a>
-                </li>
+                    {% if perms.usuarios.view_usuario %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'usuarios:usuario_list' %}">Usuários</a>
+                        </li>
+                    {% endif %}
 
-                <li class="nav-item">
-                    <a class="nav-link"
-                       href="{% url 'produtos:produto_list' %}">
-                        Produtos
-                    </a>
-                </li>
+                    {% if perms.produtos.view_categoria %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'produtos:categoria_list' %}">Categorias</a>
+                        </li>
+                    {% endif %}
 
-                <li class="nav-item">
-                    <a class="nav-link"
-                       href="{% url 'fornecedores:fornecedor_list' %}">
-                        Fornecedores
-                    </a>
-                </li>
+                    {% if perms.produtos.view_produto %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'produtos:produto_list' %}">Produtos</a>
+                        </li>
+                    {% endif %}
 
-                <li class="nav-item">
-                    <a class="nav-link"
-                       href="{% url 'vendas:venda_list' %}">
-                        Vendas
-                    </a>
-                </li>
+                    {% if perms.fornecedores.view_fornecedor %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'fornecedores:fornecedor_list' %}">Fornecedores</a>
+                        </li>
+                    {% endif %}
+
+                    {% if perms.vendas.view_venda %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'vendas:venda_list' %}">Vendas</a>
+                        </li>
+                    {% endif %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'feedback:feedback_list' %}">Feedback</a>
+                    </li>
+
+                {% endif %}
 
             </ul>
 
@@ -90,6 +95,12 @@
                 <span class="navbar-text text-white me-3">
                     Olá, {{ user.username }}
                 </span>
+
+                {% if perms.produtos.add_produto %}
+                    <a href="{% url 'produtos:produto_create' %}" class="btn btn-outline-light btn-sm me-2">
+                        Novo produto
+                    </a>
+                {% endif %}
 
                 <form method="POST"
                       action="{% url 'logout' %}">
@@ -144,12 +155,19 @@
 </div>
 
 
-<main class="container py-4">
+<main class="container py-4 app-main">
 
     {% block content %}
     {% endblock %}
 
 </main>
+
+<footer class="app-footer border-top">
+    <div class="container d-flex flex-wrap justify-content-between gap-2 py-4 text-muted small">
+        <span>&copy; {% now "Y" %} Boi na Brasa</span>
+        <span>Sistema de gestão de mercadinho</span>
+    </div>
+</footer>
 
 
 <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}">

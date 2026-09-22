@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Excluir usuário{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-danger text-white">
+        <h1 class="h4 mb-0">Excluir usuário</h1>
+    </div>
+    <div class="card-body">
+        <p>Deseja realmente excluir o usuário <strong>{{ usuario.username }}</strong>?</p>
+        <dl class="row">
+            <dt class="col-sm-3">Nome</dt>
+            <dd class="col-sm-9">{{ usuario.get_full_name|default:'-' }}</dd>
+            <dt class="col-sm-3">CPF</dt>
+            <dd class="col-sm-9">{{ usuario.cpf }}</dd>
+        </dl>
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Confirmar exclusão</button>
+            <a href="{% url 'usuarios:usuario_list' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

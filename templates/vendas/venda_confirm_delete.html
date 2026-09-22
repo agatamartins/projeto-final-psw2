@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Excluir venda{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-danger text-white">
+        <h1 class="h4 mb-0">Excluir venda</h1>
+    </div>
+    <div class="card-body">
+        <p>Deseja realmente excluir a venda <strong>#{{ venda.id }}</strong>?</p>
+        <dl class="row">
+            <dt class="col-sm-3">Data</dt>
+            <dd class="col-sm-9">{{ venda.data_venda|date:'d/m/Y H:i' }}</dd>
+            <dt class="col-sm-3">Usuário</dt>
+            <dd class="col-sm-9">{{ venda.usuario.username }}</dd>
+            <dt class="col-sm-3">Valor total</dt>
+            <dd class="col-sm-9">R$ {{ venda.valor_total }}</dd>
+        </dl>
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Confirmar exclusão</button>
+            <a href="{% url 'vendas:venda_list' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

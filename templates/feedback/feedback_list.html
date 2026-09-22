@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Feedbacks{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+    <div>
+        <h1 class="h3 mb-1">Feedbacks</h1>
+        <p class="text-muted mb-0">Opiniões enviadas pelos usuários do sistema.</p>
+    </div>
+    <a href="{% url 'feedback:feedback_create' %}" class="btn btn-primary">
+        <i class="bi bi-chat-left-text me-1"></i> Enviar feedback
+    </a>
+</div>
+
+{% for feedback in feedbacks %}
+    <article class="card shadow-sm mb-3 feedback-card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                <div>
+                    <h2 class="h6 mb-1">{{ feedback.usuario.get_full_name|default:feedback.usuario.username }}</h2>
+                    <span class="badge text-bg-light">{{ feedback.usuario.username }}</span>
+                </div>
+                <time class="text-muted small" datetime="{{ feedback.data_criacao|date:'c' }}">
+                    {{ feedback.data_criacao|date:'d/m/Y H:i' }}
+                </time>
+            </div>
+            <p class="mb-0">{{ feedback.opiniao|linebreaksbr }}</p>
+        </div>
+    </article>
+{% empty %}
+    <div class="card shadow-sm">
+        <div class="card-body text-center py-5">
+            <i class="bi bi-chat-square-text display-5 text-secondary"></i>
+            <h2 class="h5 mt-3">Ainda não existem feedbacks.</h2>
+            <p class="text-muted">Seja o primeiro a enviar uma opinião sobre o sistema.</p>
+            <a href="{% url 'feedback:feedback_create' %}" class="btn btn-primary">Enviar feedback</a>
+        </div>
+    </div>
+{% endfor %}
+{% endblock %}

@@ -32,7 +32,7 @@
 
         <ul class="list-group mb-3">
 
-            {% for produto in categoria.produtos %}
+            {% for produto in categoria.produtos.all %}
 
                 <li class="list-group-item">
                     {{ produto.nome }}
@@ -49,7 +49,7 @@
         </ul>
 
         <a
-            href="{% url 'produtos:categoria_lista_criar' %}"
+            href="{% url 'produtos:categoria_list' %}"
             class="btn btn-secondary"
         >
             Voltar

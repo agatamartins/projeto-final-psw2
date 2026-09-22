@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Excluir produto{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-danger text-white">
+        <h1 class="h4 mb-0">Excluir produto</h1>
+    </div>
+    <div class="card-body">
+        <p>Deseja realmente excluir o produto <strong>{{ produto.nome }}</strong>?</p>
+        <dl class="row">
+            <dt class="col-sm-3">Preço de venda</dt>
+            <dd class="col-sm-9">R$ {{ produto.preco_venda }}</dd>
+            <dt class="col-sm-3">Categoria</dt>
+            <dd class="col-sm-9">{{ produto.categoria.nome }}</dd>
+        </dl>
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Confirmar exclusão</button>
+            <a href="{% url 'produtos:produto_list' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

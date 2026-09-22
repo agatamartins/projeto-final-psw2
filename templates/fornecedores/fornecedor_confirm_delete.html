@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Excluir fornecedor{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-danger text-white">
+        <h1 class="h4 mb-0">Excluir fornecedor</h1>
+    </div>
+    <div class="card-body">
+        <p>Deseja realmente excluir o fornecedor <strong>{{ fornecedor.razao_social }}</strong>?</p>
+        <dl class="row">
+            <dt class="col-sm-3">CNPJ</dt>
+            <dd class="col-sm-9">{{ fornecedor.cnpj }}</dd>
+            <dt class="col-sm-3">Telefone</dt>
+            <dd class="col-sm-9">{{ fornecedor.telefone }}</dd>
+        </dl>
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Confirmar exclusão</button>
+            <a href="{% url 'fornecedores:fornecedor_list' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
