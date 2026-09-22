@@ -1,26 +1,94 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div style="max-width: 400px; margin: 50px auto;">
-    <h2>Acessar o Sistema</h2>
-    
-    {% if form.errors %}
-        <p style="color: red;">Usuário ou senha inválidos.</p>
-    {% endif %}
 
-    <form method="POST">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="id_username">Usuário:</label>
-            {{ form.username }}
+<div class="row justify-content-center">
+
+    <div class="col-md-6 col-lg-4">
+
+        <div class="card shadow-sm">
+
+            <div class="card-header bg-dark text-white text-center">
+
+                <h1 class="h4 mb-0">
+                    Acessar o Sistema
+                </h1>
+
+            </div>
+
+            <div class="card-body">
+
+                {% if form.non_field_errors %}
+
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+
+                {% endif %}
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <input
+                        type="hidden"
+                        name="next"
+                        value="{{ next }}"
+                    >
+
+                    <div class="mb-3">
+
+                        <label
+                            for="{{ form.username.id_for_label }}"
+                            class="form-label"
+                        >
+                            Usuário
+                        </label>
+
+                        {{ form.username }}
+
+                        {% for error in form.username.errors %}
+                            <div class="text-danger small">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label
+                            for="{{ form.password.id_for_label }}"
+                            class="form-label"
+                        >
+                            Senha
+                        </label>
+
+                        {{ form.password }}
+
+                        {% for error in form.password.errors %}
+                            <div class="text-danger small">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary w-100"
+                    >
+                        Entrar
+                    </button>
+
+                </form>
+
+            </div>
+
         </div>
-        <br>
-        <div class="form-group">
-            <label for="id_password">Senha:</label>
-            {{ form.password }}
-        </div>
-        <br>
-        <button type="submit">Entrar</button>
-    </form>
+
+    </div>
+
 </div>
+
 {% endblock %}

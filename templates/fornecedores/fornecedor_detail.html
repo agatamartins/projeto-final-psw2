@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+
+    <div class="card-header bg-dark text-white">
+
+        <h1 class="h4 mb-0">
+            Detalhes do Fornecedor
+        </h1>
+
+    </div>
+
+    <div class="card-body">
+
+        <p>
+            <strong>Razão Social:</strong>
+            {{ fornecedor.razao_social }}
+        </p>
+
+        <p>
+            <strong>CNPJ:</strong>
+            {{ fornecedor.cnpj }}
+        </p>
+
+        <p>
+            <strong>Telefone:</strong>
+            {{ fornecedor.telefone }}
+        </p>
+
+        <hr>
+
+        <h2 class="h5">
+            Produtos fornecidos
+        </h2>
+
+        <ul class="list-group mb-3">
+
+            {% for produto in fornecedor.produtos.all %}
+
+                <li class="list-group-item">
+                    {{ produto.nome }}
+                </li>
+
+            {% empty %}
+
+                <li class="list-group-item text-muted">
+                    Nenhum produto cadastrado para este fornecedor.
+                </li>
+
+            {% endfor %}
+
+        </ul>
+
+        <a
+            href="{% url 'fornecedores:lista_criar' %}"
+            class="btn btn-secondary"
+        >
+            Voltar
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+
+    <div class="card-header bg-dark text-white">
+        <h1 class="h4 mb-0">
+            Cadastrar Usuário
+        </h1>
+    </div>
+
+    <div class="card-body">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="mb-3">
+                <label for="{{ form.username.id_for_label }}" class="form-label">
+                    Nome de usuário
+                </label>
+
+                {{ form.username }}
+
+                {% if form.username.errors %}
+                    <div class="text-danger small">
+                        {{ form.username.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.first_name.id_for_label }}" class="form-label">
+                    Nome
+                </label>
+
+                {{ form.first_name }}
+
+                {% if form.first_name.errors %}
+                    <div class="text-danger small">
+                        {{ form.first_name.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.last_name.id_for_label }}" class="form-label">
+                    Sobrenome
+                </label>
+
+                {{ form.last_name }}
+
+                {% if form.last_name.errors %}
+                    <div class="text-danger small">
+                        {{ form.last_name.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.email.id_for_label }}" class="form-label">
+                    E-mail
+                </label>
+
+                {{ form.email }}
+
+                {% if form.email.errors %}
+                    <div class="text-danger small">
+                        {{ form.email.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.cpf.id_for_label }}" class="form-label">
+                    CPF
+                </label>
+
+                {{ form.cpf }}
+
+                {% if form.cpf.errors %}
+                    <div class="text-danger small">
+                        {{ form.cpf.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.rg.id_for_label }}" class="form-label">
+                    RG
+                </label>
+
+                {{ form.rg }}
+
+                {% if form.rg.errors %}
+                    <div class="text-danger small">
+                        {{ form.rg.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.password.id_for_label }}" class="form-label">
+                    Senha
+                </label>
+
+                {{ form.password }}
+
+                {% if form.password.errors %}
+                    <div class="text-danger small">
+                        {{ form.password.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.password_confirmacao.id_for_label }}" class="form-label">
+                    Confirmar senha
+                </label>
+
+                {{ form.password_confirmacao }}
+
+                {% if form.password_confirmacao.errors %}
+                    <div class="text-danger small">
+                        {{ form.password_confirmacao.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="d-flex gap-2">
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    <i class="bi bi-person-plus"></i>
+                    Salvar Usuário
+                </button>
+
+                <a
+                    href="{% url 'usuarios:usuario_list' %}"
+                    class="btn btn-secondary"
+                >
+                    Cancelar
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+
+    <div class="card-header bg-dark text-white">
+
+        <h1 class="h4 mb-0">
+            Detalhes da Categoria
+        </h1>
+
+    </div>
+
+    <div class="card-body">
+
+        <p>
+            <strong>Nome:</strong>
+            {{ categoria.nome }}
+        </p>
+
+        <p>
+            <strong>Descrição:</strong>
+            {{ categoria.descricao|default:"Sem descrição." }}
+        </p>
+
+        <hr>
+
+        <h2 class="h5">
+            Produtos desta categoria
+        </h2>
+
+        <ul class="list-group mb-3">
+
+            {% for produto in categoria.produtos %}
+
+                <li class="list-group-item">
+                    {{ produto.nome }}
+                </li>
+
+            {% empty %}
+
+                <li class="list-group-item text-muted">
+                    Nenhum produto cadastrado nesta categoria.
+                </li>
+
+            {% endfor %}
+
+        </ul>
+
+        <a
+            href="{% url 'produtos:categoria_lista_criar' %}"
+            class="btn btn-secondary"
+        >
+            Voltar
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

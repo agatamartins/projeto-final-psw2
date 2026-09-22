@@ -1,39 +1,163 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boi na Brasa - Gestão</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; background-color: #f8f9fa; }
-        header { background: #343a40; color: #fff; padding: 15px 20px; border-radius: 5px; margin-bottom: 20px; }
-        nav a { color: #f8f9fa; text-decoration: none; margin-right: 15px; font-weight: bold; }
-        nav a:hover { color: #ffc107; }
-        .container { background: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        .form-section, .list-section { margin-bottom: 30px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #dee2e6; padding: 10px; text-align: left; }
-        th { background-color: #e9ecef; }
-        button { background-color: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        button:hover { background-color: #218838; }
-        .form-group { margin-bottom: 12px; }
-    </style>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}Sistema de Gestão{% endblock %}
+    </title>
+
+    <link rel="stylesheet"
+          href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet"
+          href="{% static 'vendor/bootstrap-icons/bootstrap-icons.min.css' %}">
+
+    {% block extra_css %}{% endblock %}
+
 </head>
+
 <body>
-    <header>
-        <h1>Boi na Brasa - Sistema de Gestão</h1>
-        <nav>
-            <a href="{% url 'usuarios:lista_criar' %}">Usuários</a>
-            <a href="{% url 'fornecedores:lista_criar' %}">Fornecedores</a>
-            <a href="{% url 'produtos:categoria_lista_criar' %}">Categorias</a>
-            <a href="{% url 'produtos:produto_lista_criar' %}">Produtos</a>
-            <a href="{% url 'vendas:lista_criar' %}">Vendas</a>
-        </nav>
-    </header>
+
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
 
     <div class="container">
-        {% block content %}
-        {% endblock %}
+
+        <a class="navbar-brand" href="/">
+            Sistema de Gestão
+        </a>
+
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#menuPrincipal">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+        <div class="collapse navbar-collapse"
+             id="menuPrincipal">
+
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href="{% url 'usuarios:usuario_list' %}">
+                        Usuários
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href="{% url 'produtos:categoria_list' %}">
+                        Categorias
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href="{% url 'produtos:produto_list' %}">
+                        Produtos
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href="{% url 'fornecedores:fornecedor_list' %}">
+                        Fornecedores
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href="{% url 'vendas:venda_list' %}">
+                        Vendas
+                    </a>
+                </li>
+
+            </ul>
+
+            {% if user.is_authenticated %}
+
+                <span class="navbar-text text-white me-3">
+                    Olá, {{ user.username }}
+                </span>
+
+                <form method="POST"
+                      action="{% url 'logout' %}">
+
+                    {% csrf_token %}
+
+                    <button type="submit"
+                            class="btn btn-outline-light btn-sm">
+                        Sair
+                    </button>
+
+                </form>
+
+            {% else %}
+
+                <a href="{% url 'login' %}"
+                   class="btn btn-outline-light btn-sm">
+                    Entrar
+                </a>
+
+            {% endif %}
+
+        </div>
+
     </div>
+
+</nav>
+
+
+<div class="container mt-3">
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                 role="alert">
+
+                {{ message }}
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert">
+                </button>
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+</div>
+
+
+<main class="container py-4">
+
+    {% block content %}
+    {% endblock %}
+
+</main>
+
+
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}">
+</script>
+
+{% block scripts %}
+{% endblock %}
+
 </body>
+
 </html>

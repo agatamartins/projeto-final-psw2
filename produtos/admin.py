@@ -1,18 +1,82 @@
-from django.contrib import admin
+from django import forms
+
 from .models import Categoria, Produto
 
-@admin.register(Produto)
-class ProdutoAdmin(admin.ModelAdmin):
-    # Em vez de 'fornecedores', chamamos o método 'exibir_fornecedores'
-    list_display = ('nome', 'preco_venda', 'estoque_minimo', 'categoria', 'exibir_fornecedores')
 
-    # Método que pega os fornecedores e junta em uma string (ex: "Fornecedor A, Fornecedor B")
-    def exibir_fornecedores(self, obj):
-        return ", ".join([f.razao_social for f in obj.fornecedores.all()])
-    
-    # Define o nome que aparecerá no cabeçalho da coluna no admin
-    exibir_fornecedores.short_description = 'Fornecedores'
+class CategoriaForm(forms.ModelForm):
 
-@admin.register(Categoria)
-class CategoriaAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'descricao')
+    class Meta:
+        model = Categoria
+
+        fields = [
+            'nome',
+            'descricao',
+        ]
+
+        widgets = {
+            'nome': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Nome da categoria',
+                }
+            ),
+
+            'descricao': forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Descrição da categoria',
+                    'rows': 4,
+                }
+            ),
+        }
+
+
+class ProdutoForm(forms.ModelForm):
+
+    class Meta:
+        model = Produto
+
+        fields = [
+            'nome',
+            'preco_venda',
+            'estoque_minimo',
+            'categoria',
+            'fornecedor',
+        ]
+
+        widgets = {
+            'nome': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Nome do produto',
+                }
+            ),
+
+            'preco_venda': forms.NumberInput(
+                attrs={
+                    'class': 'form-control',
+                    'step': '0.01',
+                    'placeholder': '0,00',
+                }
+            ),
+
+            'estoque_minimo': forms.NumberInput(
+                attrs={
+                    'class': 'form-control',
+                    'step': '0.01',
+                    'placeholder': '0,00',
+                }
+            ),
+
+            'categoria': forms.Select(
+                attrs={
+                    'class': 'form-select',
+                }
+            ),
+
+            'fornecedor': forms.Select(
+                attrs={
+                    'class': 'form-select',
+                }
+            ),
+        }

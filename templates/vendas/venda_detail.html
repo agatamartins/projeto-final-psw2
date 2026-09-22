@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+
+    <div class="card-header bg-dark text-white">
+
+        <h1 class="h4 mb-0">
+            Detalhes da Venda #{{ venda.id }}
+        </h1>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row mb-4">
+
+            <div class="col-md-4">
+
+                <strong>Data:</strong>
+
+                <p>
+                    {{ venda.data_venda|date:"d/m/Y H:i" }}
+                </p>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <strong>Vendedor:</strong>
+
+                <p>
+                    {{ venda.usuario.username }}
+                </p>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <strong>Valor total:</strong>
+
+                <p>
+                    R$ {{ venda.valor_total }}
+                </p>
+
+            </div>
+
+        </div>
+
+        <h2 class="h5">
+            Itens da venda
+        </h2>
+
+        <div class="table-responsive">
+
+            <table class="table table-striped">
+
+                <thead class="table-dark">
+
+                    <tr>
+                        <th>Produto</th>
+                        <th>Quantidade</th>
+                        <th>Preço unitário</th>
+                        <th>Subtotal</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for item in venda.itens.all %}
+
+                    <tr>
+
+                        <td>
+                            {{ item.produto.nome }}
+                        </td>
+
+                        <td>
+                            {{ item.quantidade }}
+                        </td>
+
+                        <td>
+                            R$ {{ item.preco_unitario }}
+                        </td>
+
+                        <td>
+                            R$
+                            {% widthratio item.quantidade 1 item.preco_unitario %}
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td
+                            colspan="4"
+                            class="text-center text-muted"
+                        >
+                            Nenhum item encontrado.
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <a
+            href="{% url 'vendas:lista_criar' %}"
+            class="btn btn-secondary"
+        >
+            Voltar
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

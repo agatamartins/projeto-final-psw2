@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'usuarios',
     'produtos',
     'fornecedores',
@@ -121,11 +122,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-<<<<<<< HEAD
-AUTH_USER_MODEL = 'usuarios.Usuario'
-=======
->>>>>>> 843c6fe (Criação dos models)
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
 
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'produtos:produto_lista_criar'  # Redireciona para produtos após logar
+LOGIN_REDIRECT_URL = 'produtos:produto_lista_criar'
 LOGOUT_REDIRECT_URL = 'login'                        # Redireciona para o login após deslogar

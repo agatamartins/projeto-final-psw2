@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+
+    <div class="card-header bg-dark text-white">
+
+        <h1 class="h4 mb-0">
+            Detalhes do Produto
+        </h1>
+
+    </div>
+
+    <div class="card-body">
+
+        <dl class="row">
+
+            <dt class="col-sm-4">
+                Nome
+            </dt>
+
+            <dd class="col-sm-8">
+                {{ produto.nome }}
+            </dd>
+
+            <dt class="col-sm-4">
+                Preço de venda
+            </dt>
+
+            <dd class="col-sm-8">
+                R$ {{ produto.preco_venda }}
+            </dd>
+
+            <dt class="col-sm-4">
+                Estoque mínimo
+            </dt>
+
+            <dd class="col-sm-8">
+                {{ produto.estoque_minimo }}
+            </dd>
+
+            <dt class="col-sm-4">
+                Categoria
+            </dt>
+
+            <dd class="col-sm-8">
+                {{ produto.categoria.nome }}
+            </dd>
+
+            <dt class="col-sm-4">
+                Fornecedor
+            </dt>
+
+            <dd class="col-sm-8">
+                {{ produto.fornecedor.razao_social|default:"Sem fornecedor" }}
+            </dd>
+
+        </dl>
+
+        <a
+            href="{% url 'produtos:produto_lista_criar' %}"
+            class="btn btn-secondary"
+        >
+            Voltar
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

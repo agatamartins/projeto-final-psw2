@@ -1,14 +1,17 @@
 from django.contrib import admin
 from django.urls import path, include
-from django.contrib.auth import views as auth_views
+
+from usuarios import views as usuarios_views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # URLs nativas de Login e Logout
-    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    
-    # Suas URLs dos apps
+
+    # Autenticação
+    path('login/', usuarios_views.login_view, name='login'),
+    path('logout/', usuarios_views.logout_view, name='logout'),
+
+    # Aplicações
     path('usuarios/', include('usuarios.urls')),
     path('fornecedores/', include('fornecedores.urls')),
     path('produtos/', include('produtos.urls')),
