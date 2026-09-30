@@ -24,7 +24,11 @@
                 </div>
             {% endfor %}
 
-            <button type="submit" class="btn btn-primary">Salvar Categoria</button>
+            {% if categoria %}
+                {% if perms.produtos.change_categoria %}<button type="submit" class="btn btn-primary">Salvar Categoria</button>{% endif %}
+            {% elif perms.produtos.add_categoria %}
+                <button type="submit" class="btn btn-primary">Salvar Categoria</button>
+            {% endif %}
             <a href="{% url 'produtos:categoria_list' %}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>

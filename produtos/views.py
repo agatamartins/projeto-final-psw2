@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import CategoriaForm, ProdutoForm
 from .models import Categoria, Produto
+from usuarios.decorators import permission_denied_message
 
 
 # ==========================================================
@@ -32,9 +33,10 @@ def categoria_list(request):
 
 
 @login_required
+@permission_denied_message('produtos.add_categoria')
 @permission_required(
     'produtos.add_categoria',
-    raise_exception=True
+    raise_exception=False
 )
 def categoria_create(request):
 
@@ -91,9 +93,10 @@ def categoria_detail(request, id):
 
 
 @login_required
+@permission_denied_message('produtos.change_categoria')
 @permission_required(
     'produtos.change_categoria',
-    raise_exception=True
+    raise_exception=False
 )
 def categoria_update(request, id):
 
@@ -141,9 +144,10 @@ def categoria_update(request, id):
 
 
 @login_required
+@permission_denied_message('produtos.delete_categoria')
 @permission_required(
     'produtos.delete_categoria',
-    raise_exception=True
+    raise_exception=False
 )
 def categoria_delete(request, id):
 
@@ -186,9 +190,8 @@ def categoria_delete(request, id):
 def produto_list(request):
 
     produtos = Produto.objects.select_related(
-        'categoria',
-        'fornecedor'
-    )
+        'categoria'
+    ).prefetch_related('fornecedores')
 
     return render(
         request,
@@ -200,9 +203,10 @@ def produto_list(request):
 
 
 @login_required
+@permission_denied_message('produtos.add_produto')
 @permission_required(
     'produtos.add_produto',
-    raise_exception=True
+    raise_exception=False
 )
 def produto_create(request):
 
@@ -246,9 +250,8 @@ def produto_detail(request, id):
 
     produto = get_object_or_404(
         Produto.objects.select_related(
-            'categoria',
-            'fornecedor'
-        ),
+            'categoria'
+        ).prefetch_related('fornecedores'),
         id=id
     )
 
@@ -262,9 +265,10 @@ def produto_detail(request, id):
 
 
 @login_required
+@permission_denied_message('produtos.change_produto')
 @permission_required(
     'produtos.change_produto',
-    raise_exception=True
+    raise_exception=False
 )
 def produto_update(request, id):
 
@@ -312,9 +316,10 @@ def produto_update(request, id):
 
 
 @login_required
+@permission_denied_message('produtos.delete_produto')
 @permission_required(
     'produtos.delete_produto',
-    raise_exception=True
+    raise_exception=False
 )
 def produto_delete(request, id):
 

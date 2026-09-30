@@ -12,7 +12,7 @@ class Venda(models.Model):
 
 class ItemVenda(models.Model):
     quantidade = models.IntegerField()
-    preco_unitario = models.DecimalField(max_digits=10, decimal_places=2)
+    preco_unitario = models.IntegerField()
     venda = models.ForeignKey(Venda, on_delete=models.CASCADE, related_name='itens')
     produto = models.ForeignKey(Produto, on_delete=models.CASCADE, related_name='itens_venda')
 

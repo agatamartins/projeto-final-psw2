@@ -49,11 +49,15 @@
             </dd>
 
             <dt class="col-sm-4">
-                Fornecedor
+                Fornecedores
             </dt>
 
             <dd class="col-sm-8">
-                {{ produto.fornecedor.razao_social|default:"Sem fornecedor" }}
+                {% for fornecedor in produto.fornecedores.all %}
+                    {{ fornecedor.razao_social }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    Sem fornecedores
+                {% endfor %}
             </dd>
 
         </dl>

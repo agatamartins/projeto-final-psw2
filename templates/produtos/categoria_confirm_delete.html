@@ -12,7 +12,7 @@
         <p class="text-muted">{{ categoria.descricao|default:'Sem descrição.' }}</p>
         <form method="POST">
             {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Confirmar exclusão</button>
+            {% if perms.produtos.delete_categoria %}<button type="submit" class="btn btn-danger">Confirmar exclusão</button>{% endif %}
             <a href="{% url 'produtos:categoria_list' %}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>

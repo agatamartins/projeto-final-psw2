@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.http import url_has_allowed_host_and_scheme
 
 from .forms import UsuarioForm
+from .decorators import permission_denied_message
 from .models import Usuario
 
 
@@ -129,9 +130,10 @@ def usuario_list(request):
 # ==========================================================
 
 @login_required
+@permission_denied_message('usuarios.add_usuario')
 @permission_required(
     'usuarios.add_usuario',
-    raise_exception=True
+    raise_exception=False
 )
 def usuario_create(request):
 
@@ -148,6 +150,7 @@ def usuario_create(request):
             )
 
             usuario.save()
+            usuario.groups.set([form.cleaned_data['grupo']])
 
             messages.success(
                 request,
@@ -202,9 +205,10 @@ def usuario_detail(request, id):
 # ==========================================================
 
 @login_required
+@permission_denied_message('usuarios.change_usuario')
 @permission_required(
     'usuarios.change_usuario',
-    raise_exception=True
+    raise_exception=False
 )
 def usuario_update(request, id):
 
@@ -222,13 +226,17 @@ def usuario_update(request, id):
 
         if form.is_valid():
 
+            senha_atual = usuario.password
+            nova_senha = form.cleaned_data['password']
             usuario = form.save(commit=False)
 
-            usuario.set_password(
-                form.cleaned_data['password']
-            )
+            if nova_senha:
+                usuario.set_password(nova_senha)
+            else:
+                usuario.password = senha_atual
 
             usuario.save()
+            usuario.groups.set([form.cleaned_data['grupo']])
 
             messages.success(
                 request,
@@ -260,9 +268,10 @@ def usuario_update(request, id):
 # ==========================================================
 
 @login_required
+@permission_denied_message('usuarios.delete_usuario')
 @permission_required(
     'usuarios.delete_usuario',
-    raise_exception=True
+    raise_exception=False
 )
 def usuario_delete(request, id):
 

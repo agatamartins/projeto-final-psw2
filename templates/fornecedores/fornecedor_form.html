@@ -24,7 +24,11 @@
                 </div>
             {% endfor %}
 
-            <button type="submit" class="btn btn-primary">Salvar Fornecedor</button>
+            {% if fornecedor %}
+                {% if perms.fornecedores.change_fornecedor %}<button type="submit" class="btn btn-primary">Salvar Fornecedor</button>{% endif %}
+            {% elif perms.fornecedores.add_fornecedor %}
+                <button type="submit" class="btn btn-primary">Salvar Fornecedor</button>
+            {% endif %}
             <a href="{% url 'fornecedores:fornecedor_list' %}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>

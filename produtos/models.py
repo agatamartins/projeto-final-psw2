@@ -7,7 +7,8 @@ class Categoria(models.Model):
 
     nome = models.CharField(max_length=100)
 
-    descricao = models.TextField(
+    descricao = models.CharField(
+        max_length=255,
         blank=True,
         null=True
     )
@@ -37,10 +38,8 @@ class Produto(models.Model):
         related_name='produtos'
     )
 
-    fornecedor = models.ForeignKey(
+    fornecedores = models.ManyToManyField(
         Fornecedor,
-        on_delete=models.SET_NULL,
-        null=True,
         blank=True,
         related_name='produtos'
     )

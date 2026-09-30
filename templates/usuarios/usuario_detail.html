@@ -56,6 +56,14 @@
                 {{ usuario.rg|default:"-" }}
             </dd>
 
+            <dt class="col-sm-4">
+                Grupo
+            </dt>
+
+            <dd class="col-sm-8">
+                {% for grupo in usuario.groups.all %}{{ grupo.name }}{% if not forloop.last %}, {% endif %}{% empty %}-{% endfor %}
+            </dd>
+
         </dl>
 
         <a

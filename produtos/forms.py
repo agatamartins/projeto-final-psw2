@@ -41,7 +41,7 @@ class ProdutoForm(forms.ModelForm):
             'preco_venda',
             'estoque_minimo',
             'categoria',
-            'fornecedor',
+            'fornecedores',
         ]
 
         widgets = {
@@ -74,7 +74,7 @@ class ProdutoForm(forms.ModelForm):
                 }
             ),
 
-            'fornecedor': forms.Select(
+            'fornecedores': forms.SelectMultiple(
                 attrs={
                     'class': 'form-select',
                 }

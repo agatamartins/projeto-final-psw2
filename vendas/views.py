@@ -6,6 +6,7 @@ from usuarios.models import Usuario
 
 from .forms import VendaForm, ItemVendaForm
 from .models import Venda
+from usuarios.decorators import permission_denied_message
 
 
 @login_required
@@ -27,7 +28,10 @@ def venda_list(request):
 
 
 @login_required
-@permission_required('vendas.add_venda', raise_exception=True)
+@permission_denied_message('vendas.add_venda')
+@permission_required('vendas.add_venda', raise_exception=False)
+@permission_denied_message('vendas.add_itemvenda')
+@permission_required('vendas.add_itemvenda', raise_exception=False)
 def venda_create(request):
 
     if request.method == 'POST':
@@ -98,7 +102,8 @@ def venda_detail(request, id):
 
 
 @login_required
-@permission_required('vendas.change_venda', raise_exception=True)
+@permission_denied_message('vendas.change_venda')
+@permission_required('vendas.change_venda', raise_exception=False)
 def venda_update(request, id):
 
     venda = get_object_or_404(Venda, id=id)
@@ -133,7 +138,8 @@ def venda_update(request, id):
 
 
 @login_required
-@permission_required('vendas.delete_venda', raise_exception=True)
+@permission_denied_message('vendas.delete_venda')
+@permission_required('vendas.delete_venda', raise_exception=False)
 def venda_delete(request, id):
 
     venda = get_object_or_404(Venda, id=id)

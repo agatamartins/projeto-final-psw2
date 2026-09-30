@@ -9,9 +9,11 @@
             <h1 class="h4 mb-0">
             Usuários Cadastrados
             </h1>
-            <a href="{% url 'usuarios:usuario_create' %}" class="btn btn-primary btn-sm">
-                <i class="bi bi-person-plus me-1"></i> Cadastrar usuário
-            </a>
+            {% if perms.usuarios.add_usuario %}
+                <a href="{% url 'usuarios:usuario_create' %}" class="btn btn-primary btn-sm">
+                    <i class="bi bi-person-plus me-1"></i> Cadastrar usuário
+                </a>
+            {% endif %}
         </div>
     </div>
 
@@ -29,6 +31,7 @@
                         <th>E-mail</th>
                         <th>CPF</th>
                         <th>RG</th>
+                        <th>Grupo</th>
                         <th>Ações</th>
                     </tr>
 
@@ -61,6 +64,10 @@
                         </td>
 
                         <td>
+                            {% for grupo in usuario.groups.all %}{{ grupo.name }}{% if not forloop.last %}, {% endif %}{% empty %}-{% endfor %}
+                        </td>
+
+                        <td>
 
                             <div class="d-flex gap-1">
 
@@ -71,19 +78,23 @@
                                     Detalhes
                                 </a>
 
-                                <a
-                                    href="{% url 'usuarios:usuario_update' usuario.id %}"
-                                    class="btn btn-sm btn-warning"
-                                >
-                                    Editar
-                                </a>
+                                {% if perms.usuarios.change_usuario %}
+                                    <a
+                                        href="{% url 'usuarios:usuario_update' usuario.id %}"
+                                        class="btn btn-sm btn-warning"
+                                    >
+                                        Editar
+                                    </a>
+                                {% endif %}
 
-                                <a
-                                    href="{% url 'usuarios:usuario_delete' usuario.id %}"
-                                    class="btn btn-sm btn-danger"
-                                >
-                                    Excluir
-                                </a>
+                                {% if perms.usuarios.delete_usuario %}
+                                    <a
+                                        href="{% url 'usuarios:usuario_delete' usuario.id %}"
+                                        class="btn btn-sm btn-danger"
+                                    >
+                                        Excluir
+                                    </a>
+                                {% endif %}
 
                             </div>
 
@@ -96,7 +107,7 @@
                     <tr>
 
                         <td
-                            colspan="6"
+                            colspan="7"
                             class="text-center text-muted"
                         >
                             Nenhum usuário cadastrado.

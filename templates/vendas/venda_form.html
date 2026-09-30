@@ -33,7 +33,11 @@
                 {% endfor %}
             {% endif %}
 
-            <button type="submit" class="btn btn-primary">Salvar</button>
+            {% if form_item %}
+                {% if perms.vendas.add_venda and perms.vendas.add_itemvenda %}<button type="submit" class="btn btn-primary">Salvar</button>{% endif %}
+            {% elif perms.vendas.change_venda %}
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            {% endif %}
             <a href="{% url 'vendas:venda_list' %}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>

@@ -121,28 +121,30 @@
             </div>
 
             <div class="mb-3">
-                <label for="{{ form.password_confirmacao.id_for_label }}" class="form-label">
-                    Confirmar senha
+                <label for="{{ form.grupo.id_for_label }}" class="form-label">
+                    Grupo
                 </label>
-
-                {{ form.password_confirmacao }}
-
-                {% if form.password_confirmacao.errors %}
-                    <div class="text-danger small">
-                        {{ form.password_confirmacao.errors }}
-                    </div>
+                {{ form.grupo }}
+                {% if form.grupo.errors %}
+                    <div class="text-danger small">{{ form.grupo.errors }}</div>
                 {% endif %}
             </div>
 
             <div class="d-flex gap-2">
 
-                <button
-                    type="submit"
-                    class="btn btn-primary"
-                >
-                    <i class="bi bi-person-plus"></i>
-                    Salvar Usuário
-                </button>
+                {% if usuario %}
+                    {% if perms.usuarios.change_usuario %}
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-person-plus"></i>
+                            Salvar Usuário
+                        </button>
+                    {% endif %}
+                {% elif perms.usuarios.add_usuario %}
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-person-plus"></i>
+                        Salvar Usuário
+                    </button>
+                {% endif %}
 
                 <a
                     href="{% url 'usuarios:usuario_list' %}"

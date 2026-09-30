@@ -19,12 +19,17 @@
                 <div class="mb-3">
                     <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
                     {{ field }}
+                    {% if field.name == 'fornecedores' %}<div class="form-text">Você pode selecionar mais de um fornecedor.</div>{% endif %}
                     {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
                     {% if field.errors %}<div class="text-danger small">{{ field.errors }}</div>{% endif %}
                 </div>
             {% endfor %}
 
-            <button type="submit" class="btn btn-primary">Salvar Produto</button>
+            {% if produto %}
+                {% if perms.produtos.change_produto %}<button type="submit" class="btn btn-primary">Salvar Produto</button>{% endif %}
+            {% elif perms.produtos.add_produto %}
+                <button type="submit" class="btn btn-primary">Salvar Produto</button>
+            {% endif %}
             <a href="{% url 'produtos:produto_list' %}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>

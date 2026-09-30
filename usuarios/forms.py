@@ -1,16 +1,26 @@
 from django import forms
+from django.contrib.auth.models import Group
 
 from .models import Usuario
 
 
 class UsuarioForm(forms.ModelForm):
 
+    grupo = forms.ModelChoiceField(
+        queryset=Group.objects.order_by('name'),
+        label='Grupo',
+        empty_label='Selecione um grupo',
+        widget=forms.Select(attrs={'class': 'form-select'}),
+    )
+
     password = forms.CharField(
         label='Senha',
+        required=False,
         widget=forms.PasswordInput(
             attrs={
                 'class': 'form-control',
                 'placeholder': 'Digite a senha',
+                'autocomplete': 'new-password',
             }
         )
     )
@@ -80,3 +90,9 @@ class UsuarioForm(forms.ModelForm):
                 }
             ),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['password'].required = not self.instance.pk
+        if self.instance.pk:
+            self.fields['grupo'].initial = self.instance.groups.first()

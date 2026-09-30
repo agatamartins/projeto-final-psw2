@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import FornecedorForm
 from .models import Fornecedor
+from usuarios.decorators import permission_denied_message
 
 
 # ==========================================================
@@ -33,9 +34,10 @@ def fornecedor_list(request):
 # ==========================================================
 
 @login_required
+@permission_denied_message('fornecedores.add_fornecedor')
 @permission_required(
     'fornecedores.add_fornecedor',
-    raise_exception=True
+    raise_exception=False
 )
 def fornecedor_create(request):
 
@@ -100,9 +102,10 @@ def fornecedor_detail(request, id):
 # ==========================================================
 
 @login_required
+@permission_denied_message('fornecedores.change_fornecedor')
 @permission_required(
     'fornecedores.change_fornecedor',
-    raise_exception=True
+    raise_exception=False
 )
 def fornecedor_update(request, id):
 
@@ -154,9 +157,10 @@ def fornecedor_update(request, id):
 # ==========================================================
 
 @login_required
+@permission_denied_message('fornecedores.delete_fornecedor')
 @permission_required(
     'fornecedores.delete_fornecedor',
-    raise_exception=True
+    raise_exception=False
 )
 def fornecedor_delete(request, id):
 

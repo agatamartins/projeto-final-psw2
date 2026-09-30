@@ -19,7 +19,7 @@
         </dl>
         <form method="POST">
             {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Confirmar exclusão</button>
+            {% if perms.vendas.delete_venda %}<button type="submit" class="btn btn-danger">Confirmar exclusão</button>{% endif %}
             <a href="{% url 'vendas:venda_list' %}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>

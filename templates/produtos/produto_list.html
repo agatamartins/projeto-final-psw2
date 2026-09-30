@@ -9,9 +9,11 @@
             <h1 class="h4 mb-0">
             Produtos Cadastrados
             </h1>
-            <a href="{% url 'produtos:produto_create' %}" class="btn btn-primary btn-sm">
-                <i class="bi bi-plus-lg me-1"></i> Novo produto
-            </a>
+            {% if perms.produtos.add_produto %}
+                <a href="{% url 'produtos:produto_create' %}" class="btn btn-primary btn-sm">
+                    <i class="bi bi-plus-lg me-1"></i> Novo produto
+                </a>
+            {% endif %}
         </div>
     </div>
 
@@ -28,7 +30,7 @@
                         <th>Preço de Venda</th>
                         <th>Estoque Mínimo</th>
                         <th>Categoria</th>
-                        <th>Fornecedor</th>
+                        <th>Fornecedores</th>
                         <th>Ações</th>
                     </tr>
 
@@ -57,7 +59,11 @@
                         </td>
 
                         <td>
-                            {{ produto.fornecedor.razao_social|default:"Sem Fornecedor" }}
+                            {% for fornecedor in produto.fornecedores.all %}
+                                {{ fornecedor.razao_social }}{% if not forloop.last %}, {% endif %}
+                            {% empty %}
+                                Sem fornecedores
+                            {% endfor %}
                         </td>
 
                         <td>
